@@ -7,8 +7,7 @@
     font-size: 50px;
     position: fixed;
     bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 5%;
     font-weight: bold;
     color: #FAFAFA;
     display: flex;
