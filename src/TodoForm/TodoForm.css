@@ -7,6 +7,7 @@ form {
     align-content: center;
     flex-direction: column;
     border-radius: 30px;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   }
   
   label {
@@ -14,6 +15,7 @@ form {
     font-weight: bold;
     font-size: #1E1E1F;
     margin-bottom: 26px;
+    font-size: 1.75rem;
   }
   
   textarea {
