@@ -1,20 +1,56 @@
 import React from "react";
 import { AppUI } from "./AppUI.js";
 
+function useLocalStorage (itemName,initialValue) {
+  const [loading,setLoading] = React.useState(true)
 
+  const [item,setItem] = React.useState(initialValue);
+  
+  React.useEffect(() => {
+    setTimeout(() => {
 
-function App() {
-  const localStorageTodos = localStorage.getItem('TODOS_V1');
-  let parsedTodos;
+      const localStorageItem = localStorage.getItem(itemName);
+      let parsedItem;
+    
+      if (!localStorageItem) {
+        localStorage.setItem(itemName, JSON.stringify([]));
+        parsedItem = [];
+      } else {
+        parsedItem = JSON.parse(localStorageItem);
+      }
 
-  if (!localStorageTodos) {
-    localStorage.setItem('TODOS_V1', JSON.stringify([]));
-    parsedTodos = [];
-  } else {
-    parsedTodos = JSON.parse(localStorageTodos);
+      setItem(parsedItem);
+      setLoading(false);
+    },1500)
+  });
+
+  
+  const saveItem = (newItem) => {
+    const stringifiedItem = JSON.stringify(newItem);
+    localStorage.setItem(itemName, stringifiedItem);
+    setItem(newItem);
+  };
+  
+  return{
+    item,
+    saveItem,
+    loading,
   }
 
-  const [todos,setTodos] = React.useState(parsedTodos);
+  // return[
+  //   item,
+  //   saveItem
+  // ];
+}
+
+function App() {
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+  } = useLocalStorage('TODOS_V1',[]);
+
+  // const [todos,saveTodos] = useLocalStorage('TODOS_V1',[]);  
   
   const [searchValue,setSearchValue] = React.useState('');
 
@@ -35,12 +71,6 @@ function App() {
       return todoText.includes(searchText);
     })
   }
-
-  const saveTodos = (newTodos) => {
-    const stringifiedTodos = JSON.stringify(newTodos);
-    localStorage.setItem('TODOS_V1', stringifiedTodos);
-    setTodos(newTodos);
-  };
 
   const completeTodos = (text) => {
     const todoIndex = todos.findIndex(todo=>todo.text === text);
@@ -64,6 +94,12 @@ function App() {
     });
     saveTodos(newTodos);
   }
+  
+  // console.log('Prev Render')
+  // React.useEffect(() => {
+  //   console.log('use effect')
+  // },[totalTodos])
+  // console.log('Post Render')
 
   return (
     <AppUI
@@ -77,6 +113,7 @@ function App() {
     openModal={openModal}
     setOpenModal={setOpenModal}
     addTodos={addTodos}
+    loading = {loading}
     />
   );
 }

@@ -9,6 +9,7 @@ import { Modal } from "../Modal/index.js";
 import { TodoForm } from "../TodoForm/index.js";
 
 function AppUI({
+        loading,
         completedTodos,
         totalTodos,
         searchValue,
@@ -32,15 +33,17 @@ function AppUI({
             setSearchValue={setSearchValue}
             />
             <TodoList>
-            {searchedTodos.map(todo =>(
-                <TodoItem 
-                key={todo.text}
-                text={todo.text}
-                completed={todo.completed}
-                onComplete={()=>completeTodos(todo.text)}
-                onDelete={()=>deleteTodos(todo.text)}
-                />
-            ))}
+                {loading && <p>Cargando ... </p>}
+                {(!loading && !searchedTodos.length) && <p>Crea tu primer TODO</p>}
+                {searchedTodos.map(todo =>(
+                    <TodoItem 
+                    key={todo.text}
+                    text={todo.text}
+                    completed={todo.completed}
+                    onComplete={()=>completeTodos(todo.text)}
+                    onDelete={()=>deleteTodos(todo.text)}
+                    />
+                ))}
             </TodoList>
             {!!openModal && (
                 <Modal>
