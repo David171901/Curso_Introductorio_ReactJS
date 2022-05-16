@@ -7,31 +7,24 @@ import { TodoSearch } from "../TodoSearch/index.js"
 import { TodoTitle } from "../TodoTitle/index.js";
 import { Modal } from "../Modal/index.js";
 import { TodoForm } from "../TodoForm/index.js";
+import {TodoContext} from "../TodoContext"
 
-function AppUI({
+function AppUI(){
+    const {
         loading,
-        completedTodos,
-        totalTodos,
-        searchValue,
-        setSearchValue,
         searchedTodos,
         completeTodos,
         deleteTodos,
         openModal,
         setOpenModal,
-        addTodos
-    }){
+        addTodos,
+    } = React.useContext(TodoContext);
+
     return(
         <React.Fragment>
             <TodoTitle/>
-            <TodoCounter
-            completedTodos = {completedTodos}
-            totalTodos = {totalTodos}
-            />
-            <TodoSearch
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            />
+            <TodoCounter/>
+            <TodoSearch/>
             <TodoList>
                 {loading && <p>Cargando ... </p>}
                 {(!loading && !searchedTodos.length) && <p>Crea tu primer TODO</p>}
